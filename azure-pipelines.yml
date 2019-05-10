@@ -12,6 +12,13 @@ stages:
       - task: TerraformInstaller@0
         inputs:
           terraformVersion: '0.11.13'
+      - task: Bash@3
+        displayName: Lint
+        inputs:
+          targetType: 'inline'
+          script: >
+            export PATH="${PATH}:/opt/hostedtoolcache/terraform/0.11.13/x64/"
+            terraform fmt -check=true
       - task: TerraformCLI@0
         displayName: Init - sandbox
         inputs:
