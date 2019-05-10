@@ -10,14 +10,14 @@ resource "azurerm_user_assigned_identity" "div-identity" {
 }
 
 resource "azurerm_resource_group" "div-shared-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   name     = "div-sandbox"
   location = "UK South"
 }
 
 resource "azurerm_role_assignment" "div-shared-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   scope                = "${azurerm_resource_group.div-shared-sandbox.name}"
   role_definition_name = "Reader"
@@ -27,14 +27,14 @@ resource "azurerm_role_assignment" "div-shared-sandbox" {
 
 ### div FRONTEND SANDBOX ###
 resource "azurerm_resource_group" "div-frontend-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   name     = "div-frontend-sandbox"
   location = "UK South"
 }
 
 resource "azurerm_role_assignment" "div-frontend-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   scope                = "${azurerm_resource_group.div-frontend-sandbox.name}"
   role_definition_name = "Reader"
@@ -43,14 +43,14 @@ resource "azurerm_role_assignment" "div-frontend-sandbox" {
 
 ### div Backend SANDBOX ###
 resource "azurerm_resource_group" "div-backend-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   name     = "div-backend-sandbox"
   location = "UK South"
 }
 
 resource "azurerm_role_assignment" "div-backend-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   scope                = "${azurerm_resource_group.div-backend-sandbox.name}"
   role_definition_name = "Reader"
@@ -58,7 +58,7 @@ resource "azurerm_role_assignment" "div-backend-sandbox" {
 }
 
 resource "azurerm_resource_group" "div-data-sandbox" {
-  provider = "azurerm.div-sandbox"
+  provider = "azurerm.sandbox"
 
   name     = "div-backend-data-sandbox"
   location = "UK South"
