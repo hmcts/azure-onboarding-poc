@@ -32,6 +32,10 @@ stages:
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+      - task: PublishBuildArtifacts@1
+        inputs:
+          pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+          artifactName: drop
 - stage: Deploy
   dependsOn: Build
   condition: succeeded()
@@ -45,6 +49,12 @@ stages:
       runOnce:
         deploy:
           steps:
+            - task: DownloadBuildArtifacts@0
+              inputs:
+                buildType: 'current'
+                downloadType: 'single'
+                artifactName: 'drop'
+                downloadPath: '$(System.ArtifactsDirectory)'
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
