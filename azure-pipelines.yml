@@ -48,8 +48,7 @@ stages:
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
+              displayName: Init - sandbox
               inputs:
                 command: 'init'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
-
-
