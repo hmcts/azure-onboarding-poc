@@ -13,3 +13,17 @@ steps:
     Version: '0.11.13'
     UseAzureSub: false
   displayName: 'Init'
+
+- task: Terraform@2
+  inputs:
+    TemplatePath: '.'
+    Arguments: 'init'
+    InstallTerraform: true
+    Version: '0.11.13'
+    UseAzureSub: false
+  displayName: 'Init'
+- task: Bash@3
+  displayName: 'Lint'
+  inputs:
+    targetType: 'inline'
+    script: 'terraform fmt -check=true
