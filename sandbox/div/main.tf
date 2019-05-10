@@ -3,56 +3,58 @@
 resource "azurerm_user_assigned_identity" "div-identity" {
   provider = "azurerm.cftapps-sandbox"
 
-  resource_group_name = "managed-identities-sandbox"
+  resource_group_name = "${var.managed_identity_rg_name}"
   location            = "UK South"
 
-  name = "search-api"
+  name = "test-div-sandbox"
 }
+
+variable "managed_identity_rg_name" {}
+variable "resource_groups_resource_id" {}
 
 resource "azurerm_resource_group" "div-shared-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "div-sandbox"
+  name     = "test-div-sandbox"
   location = "UK South"
 }
 
 resource "azurerm_role_assignment" "div-shared-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.div-shared-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.div-shared-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.div-identity.principal_id}"
 }
 
-
 ### div FRONTEND SANDBOX ###
-resource "azurerm_resource_group" "div-frontend-sandbox" {
+resource "azurerm_resource_group" "test-div-frontend-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "div-frontend-sandbox"
+  name     = "test-div-frontend-sandbox"
   location = "UK South"
 }
 
-resource "azurerm_role_assignment" "div-frontend-sandbox" {
+resource "azurerm_role_assignment" "test-div-frontend-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.div-frontend-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.test-div-frontend-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.div-identity.principal_id}"
 }
 
 ### div Backend SANDBOX ###
-resource "azurerm_resource_group" "div-backend-sandbox" {
+resource "azurerm_resource_group" "test-div-backend-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "div-backend-sandbox"
+  name     = "test-div-backend-sandbox"
   location = "UK South"
 }
 
-resource "azurerm_role_assignment" "div-backend-sandbox" {
+resource "azurerm_role_assignment" "test-div-backend-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.div-backend-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.test-div-backend-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.div-identity.principal_id}"
 }
@@ -63,4 +65,3 @@ resource "azurerm_resource_group" "div-data-sandbox" {
   name     = "div-backend-data-sandbox"
   location = "UK South"
 }
-

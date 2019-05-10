@@ -3,56 +3,58 @@
 resource "azurerm_user_assigned_identity" "cmc-identity" {
   provider = "azurerm.cftapps-sandbox"
 
-  resource_group_name = "managed-identities-sandbox"
+  resource_group_name = "${var.managed_identity_rg_name}"
   location            = "UK South"
 
-  name = "search-api"
+  name = "test-cmc-sandbox"
 }
+
+variable "managed_identity_rg_name" {}
+variable "resource_groups_resource_id" {}
 
 resource "azurerm_resource_group" "cmc-shared-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "cmc-sandbox"
+  name     = "test-cmc-sandbox"
   location = "UK South"
 }
 
 resource "azurerm_role_assignment" "cmc-shared-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.cmc-shared-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.cmc-shared-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.cmc-identity.principal_id}"
 }
 
-
 ### CMC FRONTEND SANDBOX ###
-resource "azurerm_resource_group" "cmc-frontend-sandbox" {
+resource "azurerm_resource_group" "test-cmc-frontend-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "cmc-frontend-sandbox"
+  name     = "test-cmc-frontend-sandbox"
   location = "UK South"
 }
 
-resource "azurerm_role_assignment" "cmc-frontend-sandbox" {
+resource "azurerm_role_assignment" "test-cmc-frontend-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.cmc-frontend-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.test-cmc-frontend-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.cmc-identity.principal_id}"
 }
 
 ### CMC Backend SANDBOX ###
-resource "azurerm_resource_group" "cmc-backend-sandbox" {
+resource "azurerm_resource_group" "test-cmc-backend-sandbox" {
   provider = "azurerm.sandbox"
 
-  name     = "cmc-backend-sandbox"
+  name     = "test-cmc-backend-sandbox"
   location = "UK South"
 }
 
-resource "azurerm_role_assignment" "cmc-backend-sandbox" {
+resource "azurerm_role_assignment" "test-cmc-backend-sandbox" {
   provider = "azurerm.sandbox"
 
-  scope                = "${azurerm_resource_group.cmc-backend-sandbox.name}"
+  scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.test-cmc-backend-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.cmc-identity.principal_id}"
 }
@@ -63,4 +65,3 @@ resource "azurerm_resource_group" "cmc-data-sandbox" {
   name     = "cmc-backend-data-sandbox"
   location = "UK South"
 }
-
