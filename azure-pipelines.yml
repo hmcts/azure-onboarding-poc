@@ -32,11 +32,14 @@ stages:
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+
       - task: TerraformCLI@0
         displayName: Plan - Sandbox
         inputs:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+          environmentServiceName: 'azurerm_rpetemp_rg_creator'
+
       - task: TerraformCLI@0
         displayName: Init - aat
         inputs:
@@ -58,6 +61,7 @@ stages:
         inputs:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+          environmentServiceName: 'azurerm_rpetemp_rg_creator'
 - stage: Deploy
 #  dependsOn: Build
 #  condition: succeeded()
@@ -92,6 +96,7 @@ stages:
                 command: 'plan'
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+                commandOptions: '-out=tfplan'
   - deployment: AAT
     pool:
       vmImage: 'Ubuntu-16.04'
@@ -122,3 +127,4 @@ stages:
                 command: 'plan'
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+                commandOptions: '-out=tfplan'
