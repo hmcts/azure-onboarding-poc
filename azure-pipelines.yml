@@ -1,16 +1,62 @@
 trigger:
 - master
 
-pool:
-  vmImage: 'ubuntu-16.04'
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    continueOnError: true
+    steps:
+      - task: TerraformInstaller@0
+        inputs:
+          terraformVersion: '0.11.13'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'init'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/prod'
+      - task: TerraformCLI@0
+        inputs:
+          command: 'validate'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/prod'
+- stage: Deploy
+  jobs:
+  - deployment: RunIt
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'sandbox'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+            - task: TerraformInstaller@0
+              inputs:
+                terraformVersion: '0.11.13'
+            - task: TerraformCLI@0
+              inputs:
+                command: 'init'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+            - task: TerraformCLI@0
+              inputs:
+                command: 'validate'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
 
-steps:
-- task: TerraformInstaller@0
-  inputs:
-    terraformVersion: '0.11.13'
-- task: TerraformCLI@0
-  inputs:
-    command: 'init'
-- task: TerraformCLI@0
-  inputs:
-    command: 'fmt -check=true'
+
