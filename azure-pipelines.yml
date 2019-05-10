@@ -47,8 +47,9 @@ stages:
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
-            - task: TerraformCLI@0
-              displayName: Init - sandbox
+            - task: Terraform@2
               inputs:
-                command: 'init'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+                TemplatePath: 'sandbox'
+                Arguments: 'init'
+                InstallTerraform: false
+                UseAzureSub: false
