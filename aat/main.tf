@@ -4,7 +4,7 @@ provider "azurerm" {
 
 provider "azurerm" {
   subscription_id = "50f88971-400a-4855-8924-c38a47112ce4"
-  alias           = "cftapps-sandbox"
+  alias           = "cftapps-aat"
 }
 
 provider "azurerm" {
