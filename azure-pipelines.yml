@@ -55,7 +55,8 @@ stages:
                 command: 'init'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
             - task: TerraformCLI@0
-              displayName: Validate - Sandbox
+              displayName: Plan - sandbox
               inputs:
-                command: 'validate'
+                command: 'plan'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
