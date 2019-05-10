@@ -1,5 +1,5 @@
 resource "azurerm_resource_group" "managed-identities-aat" {
-  provider = "azurerm.cftapps-aat"
+  provider = "azurerm.cftapps-aaa"
 
   name     = "managed-identities-aat"
   location = "UK South"

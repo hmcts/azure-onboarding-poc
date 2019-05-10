@@ -33,7 +33,7 @@ stages:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
 - stage: Deploy
-  condition: succeeded()
+  condition: succeeded('Build')
   jobs:
   - deployment: RunIt
     pool:
@@ -47,9 +47,8 @@ stages:
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
-            - task: Terraform@2
+            - task: TerraformCLI@0
+              displayName: Validate - Sandbox
               inputs:
-                TemplatePath: 'sandbox'
-                Arguments: 'init'
-                InstallTerraform: false
-                UseAzureSub: false
+                command: 'validate'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
