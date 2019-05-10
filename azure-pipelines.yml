@@ -97,6 +97,13 @@ stages:
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
                 commandOptions: '-out=tfplan'
+            - task: TerraformCLI@0
+              displayName: Apply - sandbox
+              inputs:
+                command: 'apply'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                commandOptions: 'tfplan'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
   - deployment: AAT
     pool:
       vmImage: 'Ubuntu-16.04'
@@ -128,3 +135,10 @@ stages:
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
                 commandOptions: '-out=tfplan'
+            - task: TerraformCLI@0
+              displayName: Apply - aat
+              inputs:
+                command: 'apply'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                commandOptions: 'tfplan'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
