@@ -15,27 +15,53 @@ stages:
         displayName: Lint
         inputs:
           targetType: 'inline'
-          script: '/opt/hostedtoolcache/terraform/0.11.13/x64/terraform fmt -check=true'
+          script: '/opt/hostedtoolcache/terraform/0.11.13/x64/terraform fmt -check=true'          
       - task: TerraformCLI@0
         displayName: Init - sandbox
         inputs:
           command: 'init'
+          backendType: 'azurerm'
+          backendServiceArm: 'azurerm_rpetemp_rg_creator'
+          backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+          backendAzureRmStorageAccountName: 'rpetemptfstate'
+          backendAzureRmContainerName: 'rpetemp'
+          backendAzureRmKey: 'rgs/sandbox.tfstate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
       - task: TerraformCLI@0
         displayName: Validate - Sandbox
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+
+      - task: TerraformCLI@0
+        displayName: Plan - Sandbox
+        inputs:
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+          environmentServiceName: 'azurerm_rpetemp_rg_creator'
+
       - task: TerraformCLI@0
         displayName: Init - aat
         inputs:
           command: 'init'
+          backendType: 'azurerm'
+          backendServiceArm: 'azurerm_rpetemp_rg_creator'
+          backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+          backendAzureRmStorageAccountName: 'rpetemptfstate'
+          backendAzureRmContainerName: 'rpetemp'
+          backendAzureRmKey: 'rgs/aat.tfstate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
       - task: TerraformCLI@0
         displayName: Validate - aat
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+      - task: TerraformCLI@0
+        displayName: Plan - AAT
+        inputs:
+          command: 'plan'
+          workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+          environmentServiceName: 'azurerm_rpetemp_rg_creator'
 - stage: Deploy
 #  dependsOn: Build
 #  condition: succeeded()
@@ -57,12 +83,26 @@ stages:
               displayName: Init - sandbox
               inputs:
                 command: 'init'
+                backendType: 'azurerm'
+                backendServiceArm: 'azurerm_rpetemp_rg_creator'
+                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+                backendAzureRmStorageAccountName: 'rpetemptfstate'
+                backendAzureRmContainerName: 'rpetemp'
+                backendAzureRmKey: 'rgs/sandbox.tfstate'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
             - task: TerraformCLI@0
               displayName: Plan - sandbox
               inputs:
                 command: 'plan'
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+                commandOptions: '-out=tfplan'
+            - task: TerraformCLI@0
+              displayName: Apply - sandbox
+              inputs:
+                command: 'apply'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
   - deployment: AAT
     pool:
@@ -81,10 +121,24 @@ stages:
               displayName: Init - aat
               inputs:
                 command: 'init'
+                backendType: 'azurerm'
+                backendServiceArm: 'azurerm_rpetemp_rg_creator'
+                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+                backendAzureRmStorageAccountName: 'rpetemptfstate'
+                backendAzureRmContainerName: 'rpetemp'
+                backendAzureRmKey: 'rgs/aat.tfstate'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
             - task: TerraformCLI@0
               displayName: Plan - aat
               inputs:
                 command: 'plan'
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+                commandOptions: '-out=tfplan'
+            - task: TerraformCLI@0
+              displayName: Apply - aat
+              inputs:
+                command: 'apply'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
