@@ -2,28 +2,15 @@ trigger:
 - master
 
 pool:
-  vmImage: 'windows-2019'
+  vmImage: 'ubuntu-16.04'
 
 steps:
-- task: Terraform@2
+- task: TerraformInstaller@0
   inputs:
-    TemplatePath: '.'
-    Arguments: 'init'
-    InstallTerraform: true
-    Version: '0.11.13'
-    UseAzureSub: false
-  displayName: 'Init'
-
-- task: Terraform@2
+    terraformVersion: '0.11.13'
+- task: TerraformCLI@0
   inputs:
-    TemplatePath: '.'
-    Arguments: 'init'
-    InstallTerraform: true
-    Version: '0.11.13'
-    UseAzureSub: false
-  displayName: 'Init'
-- task: Bash@3
-  displayName: 'Lint'
+    command: 'init'
+- task: TerraformCLI@0
   inputs:
-    targetType: 'inline'
-    script: 'terraform fmt -check=true'
+    command: 'fmt -check=true'
