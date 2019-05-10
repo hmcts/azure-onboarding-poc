@@ -8,8 +8,8 @@ steps:
 - task: Terraform@2
   inputs:
     TemplatePath: '.'
-    Arguments: 'fmt --check=true'
+    Arguments: 'init'
     InstallTerraform: true
     Version: '0.11.13'
     UseAzureSub: false
-  displayName: 'Lint'
+  displayName: 'Init'
