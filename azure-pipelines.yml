@@ -13,30 +13,37 @@ stages:
         inputs:
           terraformVersion: '0.11.13'
       - task: TerraformCLI@0
+        displayName: Init - sandbox
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
       - task: TerraformCLI@0
+        displayName: Validate - Sandbox
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
       - task: TerraformCLI@0
+        displayName: Init - aat
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
       - task: TerraformCLI@0
+        displayName: Validate - aat
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
       - task: TerraformCLI@0
+        displayName: Init - prod
         inputs:
           command: 'init'
           workingDirectory: '$(System.DefaultWorkingDirectory)/prod'
       - task: TerraformCLI@0
+        displayName: Validate - prod
         inputs:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/prod'
 - stage: Deploy
+  condition: succeeded()
   jobs:
   - deployment: RunIt
     pool:
@@ -53,10 +60,6 @@ stages:
             - task: TerraformCLI@0
               inputs:
                 command: 'init'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
-            - task: TerraformCLI@0
-              inputs:
-                command: 'validate'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
 
 
