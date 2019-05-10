@@ -36,7 +36,7 @@ stages:
   dependsOn: Build
   condition: succeeded()
   jobs:
-  - deployment: RunIt
+  - deployment: Sandbox
     pool:
       vmImage: 'Ubuntu-16.04'
     environment: 'sandbox'
@@ -60,3 +60,27 @@ stages:
                 command: 'plan'
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+  - deployment: AAT
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'aat'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+            - checkout: self
+            - task: TerraformInstaller@0
+              inputs:
+                terraformVersion: '0.11.13'
+            - task: TerraformCLI@0
+              displayName: Init - aat
+              inputs:
+                command: 'init'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+            - task: TerraformCLI@0
+              displayName: Plan - aat
+              inputs:
+                command: 'plan'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
+                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
