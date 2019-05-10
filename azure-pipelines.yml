@@ -37,8 +37,8 @@ stages:
           command: 'validate'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
 - stage: Deploy
-  dependsOn: Build
-  condition: succeeded()
+#  dependsOn: Build
+#  condition: succeeded()
   jobs:
   - deployment: Sandbox
     pool:
