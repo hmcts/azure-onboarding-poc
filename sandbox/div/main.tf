@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "div-shared-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "div-shared-sandbox" {}
+resource "random_uuid" "div-shared-sandbox" { }
 
 resource "azurerm_role_assignment" "div-shared-sandbox" {
   provider = "azurerm.sandbox"
@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "test-div-frontend-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-div-frontend-sandbox" {}
+resource "random_uuid" "test-div-frontend-sandbox" { }
 
 resource "azurerm_role_assignment" "test-div-frontend-sandbox" {
   provider = "azurerm.sandbox"
@@ -59,7 +59,7 @@ resource "azurerm_resource_group" "test-div-backend-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-div-backend-sandbox" {}
+resource "random_uuid" "test-div-backend-sandbox" { }
 
 resource "azurerm_role_assignment" "test-div-backend-sandbox" {
   provider = "azurerm.sandbox"
