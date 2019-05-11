@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "cmc-shared-aat" {
   location = "UK South"
 }
 
-resource "random_uuid" "cmc-shared-aat" { }
+resource "random_uuid" "cmc-shared-aat" {}
 
 resource "azurerm_role_assignment" "cmc-shared-aat" {
   provider = "azurerm.aat"
@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "test-cmc-frontend-aat" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-cmc-frontend-aat" { }
+resource "random_uuid" "test-cmc-frontend-aat" {}
 
 resource "azurerm_role_assignment" "test-cmc-frontend-aat" {
   provider = "azurerm.aat"
@@ -59,7 +59,7 @@ resource "azurerm_resource_group" "test-cmc-backend-aat" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-cmc-backend-aat" { }
+resource "random_uuid" "test-cmc-backend-aat" {}
 
 resource "azurerm_role_assignment" "test-cmc-backend-aat" {
   provider = "azurerm.aat"

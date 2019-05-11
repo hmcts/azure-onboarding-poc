@@ -19,7 +19,7 @@ resource "azurerm_resource_group" "cmc-shared-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "cmc-shared-sandbox" { }
+resource "random_uuid" "cmc-shared-sandbox" {}
 
 resource "azurerm_role_assignment" "cmc-shared-sandbox" {
   provider = "azurerm.sandbox"
@@ -39,7 +39,7 @@ resource "azurerm_resource_group" "test-cmc-frontend-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-cmc-frontend-sandbox" { }
+resource "random_uuid" "test-cmc-frontend-sandbox" {}
 
 resource "azurerm_role_assignment" "test-cmc-frontend-sandbox" {
   provider = "azurerm.sandbox"
@@ -47,7 +47,7 @@ resource "azurerm_role_assignment" "test-cmc-frontend-sandbox" {
   scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.test-cmc-frontend-sandbox.name}"
   role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.cmc-identity.principal_id}"
-  id = "${random_uuid.test-cmc-frontend-sandbox.result}"
+  id                   = "${random_uuid.test-cmc-frontend-sandbox.result}"
 }
 
 ### CMC Backend SANDBOX ###
@@ -58,7 +58,7 @@ resource "azurerm_resource_group" "test-cmc-backend-sandbox" {
   location = "UK South"
 }
 
-resource "random_uuid" "test-cmc-backend-sandbox" { }
+resource "random_uuid" "test-cmc-backend-sandbox" {}
 
 resource "azurerm_role_assignment" "test-cmc-backend-sandbox" {
   provider = "azurerm.sandbox"
