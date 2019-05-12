@@ -96,6 +96,16 @@ stages:
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
+              displayName: Init - sandbox
+              inputs:
+                command: 'init'
+                backendType: 'azurerm'
+                backendServiceArm: 'azurerm_rpetemp_rg_creator'
+                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+                backendAzureRmStorageAccountName: 'rpetemptfstate'
+                backendAzureRmContainerName: 'rpetemp'
+                backendAzureRmKey: 'rgs/sandbox.tfstate'
+            - task: TerraformCLI@0
               displayName: Apply - sandbox
               inputs:
                 command: 'apply'
@@ -177,6 +187,16 @@ stages:
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
+            - task: TerraformCLI@0
+              displayName: Init - aat
+              inputs:
+                command: 'init'
+                backendType: 'azurerm'
+                backendServiceArm: 'azurerm_rpetemp_rg_creator'
+                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
+                backendAzureRmStorageAccountName: 'rpetemptfstate'
+                backendAzureRmContainerName: 'rpetemp'
+                backendAzureRmKey: 'rgs/aat.tfstate'
             - task: TerraformCLI@0
               displayName: Apply - aat
               inputs:
