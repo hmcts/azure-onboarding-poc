@@ -37,6 +37,7 @@ stages:
         displayName: Plan - Sandbox
         inputs:
           command: 'plan'
+          commandOptions: '-out=tfplan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
       - task: PublishPipelineArtifact@0
@@ -63,6 +64,7 @@ stages:
         displayName: Plan - AAT
         inputs:
           command: 'plan'
+          commandOptions: '-out=tfplan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
       - task: PublishPipelineArtifact@0
@@ -94,30 +96,11 @@ stages:
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
-              displayName: Init - sandbox
-              inputs:
-                command: 'init'
-                backendType: 'azurerm'
-                backendServiceArm: 'azurerm_rpetemp_rg_creator'
-                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
-                backendAzureRmStorageAccountName: 'rpetemptfstate'
-                backendAzureRmContainerName: 'rpetemp'
-                backendAzureRmKey: 'rgs/sandbox.tfstate'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
-            - task: TerraformCLI@0
-              displayName: Plan - sandbox
-              inputs:
-                command: 'plan'
-                environmentServiceName: 'azurerm_rpetemp_rg_creator'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
-                commandOptions: '-out=tfplan'
-            - task: TerraformCLI@0
               displayName: Apply - sandbox
               inputs:
                 command: 'apply'
-                environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 commandOptions: 'tfplan'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
 - stage: Perftest
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
@@ -182,35 +165,24 @@ stages:
       runOnce:
         deploy:
           steps:
-            - checkout: self
+            - task: DownloadPipelineArtifact@1
+              inputs:
+                buildType: 'current'
+                artifactName: 'aat'
+                targetPath: '$(System.DefaultWorkingDirectory)'
+            - task: Bash@3
+              inputs:
+                targetType: 'inline'
+                script: 'ls -lash'
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
-              displayName: Init - aat
-              inputs:
-                command: 'init'
-                backendType: 'azurerm'
-                backendServiceArm: 'azurerm_rpetemp_rg_creator'
-                backendAzureRmResourceGroupName: 'core-infra-rpetemp'
-                backendAzureRmStorageAccountName: 'rpetemptfstate'
-                backendAzureRmContainerName: 'rpetemp'
-                backendAzureRmKey: 'rgs/aat.tfstate'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
-            - task: TerraformCLI@0
-              displayName: Plan - aat
-              inputs:
-                command: 'plan'
-                environmentServiceName: 'azurerm_rpetemp_rg_creator'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
-                commandOptions: '-out=tfplan'
-            - task: TerraformCLI@0
               displayName: Apply - aat
               inputs:
                 command: 'apply'
-                environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 commandOptions: 'tfplan'
-                workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+                environmentServiceName: 'azurerm_rpetemp_rg_creator'
 - stage: Prod
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
