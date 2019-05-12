@@ -2,9 +2,9 @@ trigger:
 - master
 
 stages:
-- stage: Build
+- stage: CI
   jobs:
-  - job: Build
+  - job: Validate
     pool:
       vmImage: 'Ubuntu-16.04'
     steps:
