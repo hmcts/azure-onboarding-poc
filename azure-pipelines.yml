@@ -135,6 +135,22 @@ stages:
             inputs:
               targetType: 'inline'
               script: 'echo hello world'
+- stage: Demo
+  dependsOn: Sandbox
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'demo'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: 'echo hello world'
 - stage: AAT
   dependsOn: Sandbox
   jobs:
