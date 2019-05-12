@@ -117,7 +117,8 @@ stages:
           steps:
           - task: Bash@3
             inputs:
-              filePath: 'echo hello world'
+              targetType: 'inline'
+              script: 'echo hello world'
 - stage: ITHC
   jobs:
   - deployment: Deploy
@@ -131,7 +132,8 @@ stages:
           steps:
           - task: Bash@3
             inputs:
-              filePath: 'echo hello world'
+              targetType: 'inline'
+              script: 'echo hello world'
 - stage: AAT
   jobs:
   - deployment: Deploy
@@ -185,4 +187,5 @@ stages:
           steps:
           - task: Bash@3
             inputs:
-              filePath: 'echo hello world'
+              targetType: 'inline'
+              script: 'echo hello world'
