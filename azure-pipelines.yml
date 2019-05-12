@@ -62,11 +62,11 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
-- stage: Deploy
+- stage: Sandbox
 #  dependsOn: Build
 #  condition: succeeded()
   jobs:
-  - deployment: Sandbox
+  - deployment: Deploy
     pool:
       vmImage: 'Ubuntu-16.04'
     environment: 'sandbox'
@@ -104,7 +104,37 @@ stages:
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
-  - deployment: AAT
+- stage: Perftest
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'perftest'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              filePath: 'echo hello world'
+- stage: ITHC
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'ithc'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              filePath: 'echo hello world'
+- stage: AAT
+  jobs:
+  - deployment: Deploy
     pool:
       vmImage: 'Ubuntu-16.04'
     environment: 'aat'
@@ -142,3 +172,17 @@ stages:
                 environmentServiceName: 'azurerm_rpetemp_rg_creator'
                 commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
+- stage: Prod
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'Ubuntu-16.04'
+    environment: 'prod'
+    strategy:
+      # default deployment strategy
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              filePath: 'echo hello world'
