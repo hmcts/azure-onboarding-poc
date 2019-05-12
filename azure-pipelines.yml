@@ -15,7 +15,9 @@ stages:
         displayName: Lint
         inputs:
           targetType: 'inline'
-          script: '/opt/hostedtoolcache/terraform/0.11.13/x64/terraform fmt -check=true'          
+          script: '/opt/hostedtoolcache/terraform/0.11.13/x64/terraform fmt -check=true'
+
+# Sandbox
       - task: TerraformCLI@0
         displayName: Init - sandbox
         inputs:
@@ -44,6 +46,7 @@ stages:
         inputs:
           artifactName: 'sandbox'
           targetPath: '$(System.DefaultWorkingDirectory)/sandbox'
+# AAT
       - task: TerraformCLI@0
         displayName: Init - aat
         inputs:
@@ -89,6 +92,7 @@ stages:
                 artifactName: 'sandbox'
                 targetPath: '$(System.DefaultWorkingDirectory)'
             - task: Bash@3
+              displayName: 'Show files'
               inputs:
                 targetType: 'inline'
                 script: 'ls -lash'
@@ -96,7 +100,7 @@ stages:
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
-              displayName: Init - sandbox
+              displayName: Init
               inputs:
                 command: 'init'
                 backendType: 'azurerm'
@@ -106,7 +110,7 @@ stages:
                 backendAzureRmContainerName: 'rpetemp'
                 backendAzureRmKey: 'rgs/sandbox.tfstate'
             - task: TerraformCLI@0
-              displayName: Apply - sandbox
+              displayName: Apply
               inputs:
                 command: 'apply'
                 commandOptions: 'tfplan'
@@ -125,6 +129,7 @@ stages:
         deploy:
           steps:
           - task: Bash@3
+            displayName: 'Not setup yet'
             inputs:
               targetType: 'inline'
               script: 'echo hello world'
@@ -142,6 +147,7 @@ stages:
         deploy:
           steps:
           - task: Bash@3
+            displayName: 'Not setup yet'
             inputs:
               targetType: 'inline'
               script: 'echo hello world'
@@ -159,6 +165,7 @@ stages:
         deploy:
           steps:
           - task: Bash@3
+            displayName: 'Not setup yet'
             inputs:
               targetType: 'inline'
               script: 'echo hello world'
@@ -188,7 +195,7 @@ stages:
               inputs:
                 terraformVersion: '0.11.13'
             - task: TerraformCLI@0
-              displayName: Init - aat
+              displayName: Init
               inputs:
                 command: 'init'
                 backendType: 'azurerm'
@@ -198,7 +205,7 @@ stages:
                 backendAzureRmContainerName: 'rpetemp'
                 backendAzureRmKey: 'rgs/aat.tfstate'
             - task: TerraformCLI@0
-              displayName: Apply - aat
+              displayName: Apply
               inputs:
                 command: 'apply'
                 commandOptions: 'tfplan'
@@ -217,6 +224,7 @@ stages:
         deploy:
           steps:
           - task: Bash@3
+            displayName: 'Not setup yet'
             inputs:
               targetType: 'inline'
               script: 'echo hello world'
