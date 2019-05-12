@@ -19,17 +19,3 @@ variable "sandbox_subscription_id" {
 module "aks" {
   source = "./aks"
 }
-
-module "cmc" {
-  source = "./cmc"
-
-  managed_identity_rg_name    = "${module.aks.identity_rg_name}"
-  resource_groups_resource_id = "/subscriptions/${var.sandbox_subscription_id}/resourceGroups/"
-}
-
-module "div" {
-  source = "./div"
-
-  managed_identity_rg_name    = "${module.aks.identity_rg_name}"
-  resource_groups_resource_id = "/subscriptions/${var.sandbox_subscription_id}/resourceGroups/"
-}
