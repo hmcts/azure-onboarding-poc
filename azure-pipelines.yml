@@ -63,7 +63,7 @@ stages:
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
 - stage: Sandbox  
-#  condition: succeeded()
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
   - deployment: Deploy
     pool:
@@ -104,6 +104,7 @@ stages:
                 commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
 - stage: Perftest
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
   jobs:
   - deployment: Deploy
@@ -120,6 +121,7 @@ stages:
               targetType: 'inline'
               script: 'echo hello world'
 - stage: ITHC
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
   jobs:
   - deployment: Deploy
@@ -136,6 +138,7 @@ stages:
               targetType: 'inline'
               script: 'echo hello world'
 - stage: Demo
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
   jobs:
   - deployment: Deploy
@@ -152,6 +155,7 @@ stages:
               targetType: 'inline'
               script: 'echo hello world'
 - stage: AAT
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
   jobs:
   - deployment: Deploy
@@ -193,6 +197,7 @@ stages:
                 commandOptions: 'tfplan'
                 workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
 - stage: Prod
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   dependsOn: Sandbox
   jobs:
   - deployment: Deploy
