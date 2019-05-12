@@ -12,6 +12,7 @@ stages:
         inputs:
           terraformVersion: '0.11.13'         
       - task: PowerShell@2
+        displayName: Run tests
         inputs:
           targetType: 'inline'
           script: | 
