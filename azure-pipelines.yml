@@ -45,8 +45,8 @@ stages:
           includeRootFolder: false
       - task: PublishPipelineArtifact@0
         inputs:
-          targetPath: '$(System.ArtifactsDirectory)/sandbox'
-
+          artifactName: 'sandbox'
+          targetPath: '$(System.ArtifactsDirectory)'
       - task: TerraformCLI@0
         displayName: Init - aat
         inputs:
@@ -75,6 +75,7 @@ stages:
           includeRootFolder: false
       - task: PublishPipelineArtifact@0
         inputs:
+          artifactName: 'aat'
           targetPath: '$(System.ArtifactsDirectory)/aat'
 - stage: Sandbox  
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
