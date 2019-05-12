@@ -12,6 +12,10 @@ provider "azurerm" {
   alias           = "sandbox"
 }
 
+terraform {
+  backend "azurerm" {}
+}
+
 variable "sandbox_subscription_id" {
   default = "a5453007-c32b-4336-9c79-3f643d817aea"
 }
