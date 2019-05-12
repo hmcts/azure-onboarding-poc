@@ -39,6 +39,13 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/sandbox'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/sandbox'
+          includeRootFolder: false
+      - task: PublishPipelineArtifact@0
+        inputs:
+          targetPath: '$(System.ArtifactsDirectory)/sandbox'
 
       - task: TerraformCLI@0
         displayName: Init - aat
@@ -62,6 +69,13 @@ stages:
           command: 'plan'
           workingDirectory: '$(System.DefaultWorkingDirectory)/aat'
           environmentServiceName: 'azurerm_rpetemp_rg_creator'
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: '$(System.DefaultWorkingDirectory)/aat'
+          includeRootFolder: false
+      - task: PublishPipelineArtifact@0
+        inputs:
+          targetPath: '$(System.ArtifactsDirectory)/aat'
 - stage: Sandbox  
   condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   jobs:
@@ -74,7 +88,15 @@ stages:
       runOnce:
         deploy:
           steps:
-            - checkout: self
+            - task: DownloadPipelineArtifact@1
+              inputs:
+                buildType: 'current'
+                artifactName: 'sandbox'
+                targetPath: '$(System.DefaultWorkingDirectory)'
+            - task: Bash@3
+              inputs:
+                targetType: 'inline'
+                script: 'ls -lash'
             - task: TerraformInstaller@0
               inputs:
                 terraformVersion: '0.11.13'
