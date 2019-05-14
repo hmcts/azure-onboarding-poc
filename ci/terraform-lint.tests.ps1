@@ -9,4 +9,10 @@ Describe 'Terraform files' {
       $result | Should -BeNullOrEmpty
       $LastExitCode | Should -Be 0
     }
+
+    It "do not contain the 'Owner' role" {
+        $result = Get-ChildItem -Include "*.tf" -Recurse -Attributes Normal | Get-Content | Select-String -Pattern "role_definition_name.*=.*Owner"
+
+        $result.Matches.count | Should -Be 0
+    }
 }

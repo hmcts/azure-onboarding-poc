@@ -1,2 +1,3 @@
 .terraform
 terraform.tfstate*
+TEST-CI.xml

@@ -1,14 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8" standalone="no"?>
-<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="1" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2019-05-12" time="15:28:23">
-  <environment user-domain="" user="timja" clr-version="Unknown" platform="Darwin" cwd="/Users/timja/projects/hmcts/azure-onboarding-poc" machine-name="Frankel.local" nunit-version="2.5.8.0" os-version="18.5.0" />
+<test-results xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="nunit_schema_2.5.xsd" name="Pester" total="2" errors="0" failures="0" not-run="0" inconclusive="0" ignored="0" skipped="0" invalid="0" date="2019-05-14" time="07:38:02">
+  <environment os-version="18.5.0" user-domain="" clr-version="Unknown" cwd="/Users/timja/projects/hmcts/azure-onboarding-poc" platform="Darwin" machine-name="Frankel.local" user="timja" nunit-version="2.5.8.0" />
   <culture-info current-culture="en-GB" current-uiculture="en-GB" />
-  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.1226" asserts="0" description="Pester">
+  <test-suite type="TestFixture" name="Pester" executed="True" result="Success" success="True" time="0.657" asserts="0" description="Pester">
     <results>
-      <test-suite type="TestFixture" name="/Users/timja/projects/hmcts/azure-onboarding-poc/ci/terraform-lint.tests.ps1" executed="True" result="Success" success="True" time="0.1226" asserts="0" description="/Users/timja/projects/hmcts/azure-onboarding-poc/ci/terraform-lint.tests.ps1">
+      <test-suite type="TestFixture" name="/Users/timja/projects/hmcts/azure-onboarding-poc/ci/terraform-lint.tests.ps1" executed="True" result="Success" success="True" time="0.657" asserts="0" description="/Users/timja/projects/hmcts/azure-onboarding-poc/ci/terraform-lint.tests.ps1">
         <results>
-          <test-suite type="TestFixture" name="Terraform files" executed="True" result="Success" success="True" time="0.1156" asserts="0" description="Terraform files">
+          <test-suite type="TestFixture" name="Terraform files" executed="True" result="Success" success="True" time="0.5639" asserts="0" description="Terraform files">
             <results>
-              <test-case description="are correctly formatted" name="Terraform files.are correctly formatted" time="0.0933" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="are correctly formatted" name="Terraform files.are correctly formatted" time="0.3136" asserts="0" success="True" result="Success" executed="True" />
+              <test-case description="do not contain the 'Owner' role" name="Terraform files.do not contain the 'Owner' role" time="0.0265" asserts="0" success="True" result="Success" executed="True" />
             </results>
           </test-suite>
         </results>
