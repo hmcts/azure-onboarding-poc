@@ -23,7 +23,7 @@ resource "azurerm_role_assignment" "probate-shared-sandbox" {
   provider = "azurerm.sandbox"
 
   scope                = "${var.resource_groups_resource_id}${azurerm_resource_group.probate-shared-sandbox.name}"
-  role_definition_name = "Owner"
+  role_definition_name = "Reader"
   principal_id         = "${azurerm_user_assigned_identity.probate-identity.principal_id}"
 }
 
